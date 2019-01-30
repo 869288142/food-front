@@ -1,23 +1,16 @@
 <template>
   <div class="home">
-    <input class="username" v-model="username" type="text" name="" id="" placeholder="用户名">
-    <input class="password" v-model="password" type="text" name="" id="" placeholder="密码">
-    <input class="showLogin" v-model="isLogin" type="text" name="" id="">
-    <button @click="login">登录</button>
-    <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
+    <form method="POST" action="/upload" enctype="multipart/form-data">
+      <input type="file" name="file" id="" >
+      <button type="submit">上传</button>
+    </form>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-axios.defaults.proxy = false || {
-  host: '127.0.0.1',
-  port: 7001
-}
 export default {
-  name: "home",
-  data (){
+  name: 'home',
+  data() {
     return {
       username: '',
       password: '',
@@ -26,24 +19,28 @@ export default {
   },
   methods: {
     async login() {
-      ({data:this.isLogin} = await axios.post('/login',{username: this.username, password: this.password}))
-      if(this.isLogin){
-        this.$router.push({name:'about'})
+      try {
+        this.isLogin = await this.apiPost('/login', {
+          username: this.username,
+          password: this.password
+        })
+      } catch (e) {
+        console.log(e)
       }
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
-  .home{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .username{
-    width: 300px;
-  }
-  .password{
-    width: 300px;
-  }
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.username {
+  width: 300px;
+}
+.password {
+  width: 300px;
+}
 </style>
