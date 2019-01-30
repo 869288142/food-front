@@ -9,18 +9,18 @@
 
 <script>
 export default {
-  name: 'home',
+  name: "home",
   data() {
     return {
-      username: '',
-      password: '',
+      username: "",
+      password: "",
       isLogin: false
     }
   },
   methods: {
     async login() {
       try {
-        this.isLogin = await this.apiPost('/login', {
+        this.isLogin = await this.apiPost("/login", {
           username: this.username,
           password: this.password
         })

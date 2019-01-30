@@ -37,22 +37,22 @@
   </div>
 </template>
 <script>
-import { ArrayHelper } from '../util'
+import { ArrayHelper } from "../util"
 export default {
-  name: 'search',
+  name: "search",
   data() {
     return {
       // 生成列表数组
       r_list: [],
       item: {
-        name: ' 佛山皇冠假日酒店',
-        cuisine: '私房菜',
-        a_district: '祖庙',
-        address: '广州市荔湾区十五甫三巷2-2',
+        name: " 佛山皇冠假日酒店",
+        cuisine: "私房菜",
+        a_district: "祖庙",
+        address: "广州市荔湾区十五甫三巷2-2",
         dishes: [
-          { name: '红烧牛肉面' },
-          { name: '红烧牛肉面' },
-          { name: '红烧牛肉面' }
+          { name: "红烧牛肉面" },
+          { name: "红烧牛肉面" },
+          { name: "红烧牛肉面" }
         ],
         score: 5,
         taste: 9.0,
@@ -65,7 +65,7 @@ export default {
   },
   // 控制生命周期来避免数组非响应
   async mounted() {
-    let [item] = await this.apiGet('/r')
+    let [item] = await this.apiGet("/r")
     this.r_list = ArrayHelper.getRepeatElementArray(item, 10)
   }
 }
