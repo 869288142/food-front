@@ -3,6 +3,11 @@ ul{
   padding: 0
 }
 // 清除h4默认margin
-h4, h3, h1{
+h4, h3, h2, h1{
   margin: 0
+}
+// 清除body margin padding
+body {
+  margin: 0;
+  padding: 0;
 }

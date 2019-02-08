@@ -19,6 +19,18 @@ Vue.mixin(httpMixin)
 import "./rest.scss"
 // 导入全局样式
 import "./global.scss"
+// 全局引入lodash
+import _ from "lodash"
+window._ = _
+
+// 全局导入工具类
+import * as util from "./util"
+
+import './plugins/element.js'
+window.util = util
+// 将components文件下的文件全局注册
+util.autoLoadingGlobalComponent()
+
 Vue.config.productionTip = false
 new Vue({
   router,
