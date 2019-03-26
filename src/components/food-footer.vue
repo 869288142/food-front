@@ -9,7 +9,14 @@
 export default {
   data() {
     return {
-      list: ["关于网站", "网站帮助", "推广服务", "人才招聘", "联系我们", "开发者"]
+      list: [
+        "关于网站",
+        "网站帮助",
+        "推广服务",
+        "人才招聘",
+        "联系我们",
+        "开发者"
+      ]
     }
   }
 }
@@ -19,7 +26,7 @@ export default {
   background-color: #333;
   height: 100px;
 }
-.list{
+.list {
   margin: 0 auto;
   width: 1190px;
   color: #c2c2c2;

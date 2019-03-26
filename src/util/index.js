@@ -45,3 +45,17 @@ export function autoLoadingGlobalComponent() {
     )
   })
 }
+export async function asyncPromise(...rest) {
+  let result = await Promise.all(rest)
+  return result
+}
+export function filterObjProp(obj, filterType) {
+  for (let [k, v] of Object.entries(obj)) {
+    if (v === filterType) {
+      delete obj[k]
+    }
+  }
+}
+export function isEmptyObj(obj) {
+  return JSON.stringify(obj) === "{}"
+}

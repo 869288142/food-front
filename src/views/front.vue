@@ -1,8 +1,8 @@
 <template>
-  <div id="app">
+  <div>
     <food-header :cityName="cityName"></food-header>
     <router-view></router-view>
-    <!-- <food-footer></food-footer> -->
+    <food-footer></food-footer>
   </div>
 </template>
 <script>
@@ -13,9 +13,5 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-#app {
-  height: 100%;
-}
+<style lang="scss" scoped>
 </style>

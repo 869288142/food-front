@@ -10,7 +10,7 @@ module.exports = {
     "prettier/prettier": [
       "error",
       {
-        semi: false
+        semi: false //不使用分号
       }
     ]
   },

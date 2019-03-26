@@ -10,15 +10,18 @@ import axios from "axios"
 axios.interceptors.request.use(function(config) {
   // let csrfToken = Cookie.get('csrfToken')
   // axios.defaults.headers['x-csrf-token'] = csrfToken
+  // console.log(config.url)
   return config
 })
 window.axios = axios
 import httpMixin from "./mixins/httpMixin"
 Vue.mixin(httpMixin)
+import utilMixin from "./mixins/utilMixin"
+Vue.mixin(utilMixin)
 // 导入全局重置样式
-import "./rest.scss"
+import "@/assets/scss/rest.scss"
 // 导入全局样式
-import "./global.scss"
+import "@/assets/scss/global.scss"
 // 全局引入lodash
 import _ from "lodash"
 window._ = _
@@ -26,8 +29,12 @@ window._ = _
 // 全局导入工具类
 import * as util from "./util"
 
-import './plugins/element.js'
+import "./plugins/element.js"
 window.util = util
+
+// 导入ramda
+// import R from 'ramda'
+// window.R = R
 // 将components文件下的文件全局注册
 util.autoLoadingGlobalComponent()
 

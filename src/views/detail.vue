@@ -5,13 +5,16 @@
       <div class="information">
         <div class="text flex-main-column-around">
           <h1>{{r.name}}</h1>
-          <div class="evaluate flex-main-between">
-            <i>{{r.score}}</i>
-            <span>条点评</span>
+          <div class="evaluate">
+            <span class="r-tips">{{getRTips(r.score)}}</span>
+            <span class="nostar">
+              <i :class="star(r.score)"></i>  
+            </span>
+            <span>{{r.score}}分</span>
+            <span>{{r.comment_count}}条点评</span>
             <span>人均{{r.avg_price}}元</span>
           </div>
           <div class="flex-main-between">
-            <!-- <span>{{r.area.name}}</span> -->
             <span>地址: {{r.address}}</span>
           </div>
           <div>
@@ -22,113 +25,207 @@
           </div>
           <button @click="gotoComment(r.id)">我要点评</button>
         </div>
-        <img src="" alt="">
+        <div class="photo">
+          <img :src="r.avatar_url || `/public/img/default-photo.jpeg`" alt="">
+          <span v-if="isCollecion(r.id)" @click="addCollection(r.id, user_id)">
+            收藏
+            <i></i>
+          </span>
+        </div>
+      </div>
+      <!-- 简介 -->
+      <div class="introduction">
+        <h2>
+          <span>简介</span>
+        </h2>
+        <p>{{r.introduction}}</p>
+        <!-- <h2 >
+          <span>暂无</span> 
+        </h2> -->
       </div>
       <!-- 推荐菜 -->
-      <div class="recommand">
+      <!-- <div class="recommand">
         <h2>
           <span>推荐菜</span>
         </h2>
-        <ul class="list">
+        <ul v-if="noEmpty(r.dishes)" class="list">
           <li v-for="(dish, index) in r.dishes" :key="index" class="item">
-            <img src="" alt="">
+            <img src="/public/img/default-photo.jpeg" alt="">
             <span>{{dish.name}}</span>
             <span class="price">￥{{dish.price}}</span>
           </li>
         </ul>
-      </div>
-      <!-- 评论列表 -->
-      <div class="comment">
-        <ul class="list">
-          <li v-for="(comment, index) in comments" :key="index" class="item flex-main-around">
-            <img src="" alt="">
-            <div class="article flex-main-column-around">
-              <span class="name">{{comment.user.name}}</span>
-              <div class="evaluate">
-                <i></i>
-                <span>人均:323元</span>
-              </div>
-              <div class="content">
-                {{comment.content}}
-              </div>
-              <div class="favorite">
-                <span>喜欢的菜:</span>
-                <span v-for="(e, index) in 5" :key="index">鱼皮</span>
-              </div>
-              <div class="photo flex-main-between">
-                <img v-for="(e, index) in 5" :key="index" src="" alt="">
-              </div>
-              <span>2019-01-23 22:23</span>
-            </div>
-          </li>
-        </ul>
-      </div>
+        <h2 v-else>
+          <span>暂无</span> 
+        </h2>
+      </div> -->
+    <router-view></router-view>
     </div>
   </div>
 </template>
 <script>
+import { mapGetters, mapState, mapMutations } from "vuex"
 export default {
   name: "detail",
   data() {
     return {
       r: {},
-      comments: []
+      restaurants: []
     }
   },
+  computed: {
+    ...mapGetters(["getTips", "user_id"]),
+    ...mapState(["r_id"])
+    // isCollecion() {
+    //   let r = (id) => {
+    //     console.log("tigger")
+    //     return !~this.restaurants.findIndex( restaurant => restaurant.id === id)
+    //   }
+    //   return r
+    // }
+  },
   methods: {
+    ...mapMutations(["setRId"]),
     gotoComment(id) {
       console.log(id)
       this.$router.push({ path: "/comment", query: { id } })
+    },
+    noEmpty(arr) {
+      return arr && arr.length !== 0
+    },
+    star(score) {
+      let floorScore = Math.floor(score)
+      return {
+        [`star${floorScore}`]: true
+      }
+    },
+    getRTips(n) {
+      let floorN = Math.floor(n)
+      return this.getTips(floorN)
+    },
+    addCollection(restaurant_id, user_id) {
+      this.apiPost("/addCollection", {
+        restaurant_id,
+        user_id
+      })
+    },
+    isCollecion(restaurant_id) {
+      console.log("c", this.t)
+      return !~this.restaurants.findIndex(
+        restaurant => restaurant.id === restaurant_id
+      )
     }
   },
-  async mounted() {
-    let { id } = this.$route.query
-    this.r = await this.apiGet("/getRestaurantDetail", { id })
-    this.comments = await this.apiGet("/getRestaurantCommentList", { id })
+  async created() {
+    // let p1 = this.apiGet("/getRestaurantDetail", { id })
+    // let p2 = this.apiGet("/getRestaurantCommentList", { id })
+    // eslint-disable-next-line
+    // ;[this.r, this.comments] = await util.asyncPromise(p1, p2)
+    this.r = await this.apiGet("/getRestaurantDetail", { id: this.r_id })
+    this.restaurants = await this.apiGet("/getCollection", { id: this.user_id })
+    // ;[this.r] = await util.asyncPromise(p1)
   }
 }
 </script>
 <style lang="scss" scoped>
+.r-tips {
+  font-weight: bold;
+  color: #ff7200;
+}
 .root {
   padding: 40px 0;
+  @include main-min-height($h-margin: 0px, $h-padding: 80px);
 }
 .detail {
   width: 800px;
   margin: 0 auto;
 }
 .information {
-  height: 250px;
+  // height: 250px;
   padding: 18px;
   display: flex;
   font-size: 12px;
   justify-content: space-between;
   background-color: #fff;
-  > img {
-    width: 170px;
-    flex-basis: 50%;
-    background-color: aquamarine;
+  .photo {
+    height: 250px;
+    position: relative;
+    > img {
+      width: 350px;
+      height: 250px;
+      background-color: aquamarine;
+    }
+    &:hover {
+      > span {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+    > span {
+      cursor: pointer;
+      font-size: 16px;
+      display: none;
+      position: absolute;
+      width: 30%;
+      height: 30%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      > i {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        @include icon-bg(-110px, -230px);
+      }
+    }
   }
   .text {
+    width: calc(100% - 300px);
     > h1 {
       font-weight: normal;
       color: #333;
     }
     .evaluate {
+      display: flex;
+      align-items: center;
       > i {
         display: inline-block;
         width: 68px;
         height: 12px;
         margin-right: 8px;
-        background: url("../assets/icon.png") no-repeat -60px -34px;
+        @include icon-bg(-60px, -34px);
+      }
+      > span {
+        margin-right: 30px;
       }
     }
     > button {
+      width: 100px;
       border: none;
       height: 30px;
       color: #fff;
       cursor: pointer;
-      background-color: #ffa800;
+      background-color: $theme-color;
     }
+  }
+}
+.introduction {
+  background-color: #fff;
+  margin-top: 10px;
+  > h2 {
+    border-bottom: solid 1px #f0f0f0;
+    line-height: 40px;
+    > span {
+      margin-left: 10px;
+    }
+  }
+  > p {
+    margin: 0;
+    padding: 20px 10px;
   }
 }
 .recommand {
@@ -163,63 +260,6 @@ export default {
         margin: 8px 8px 0 0;
         color: #fff;
         text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.65);
-      }
-    }
-  }
-}
-.comment {
-  background-color: #fff;
-  margin-top: 20px;
-  .list {
-    .item {
-      margin: 0 20px;
-      padding: 20px 10px;
-      align-items: flex-start;
-      border-bottom: dashed 1px #cecece;
-      > img {
-        width: 60px;
-        height: 60px;
-        background-color: aqua;
-        display: inline-block;
-      }
-      .article {
-        > span {
-          &:not(:last-child) {
-            margin-bottom: 20px;
-          }
-        }
-        > div {
-          margin-bottom: 20px;
-        }
-        .name {
-          color: #ff7200;
-        }
-        .evaluate {
-          display: flex;
-          align-items: center;
-          > i {
-            display: inline-block;
-            width: 68px;
-            height: 12px;
-            margin-right: 8px;
-            background: url("../assets/icon.png") no-repeat -60px -34px;
-          }
-        }
-        .content {
-        }
-        .favorite {
-          > span {
-            margin-right: 10px;
-          }
-        }
-        .photo {
-          > img {
-            display: inline-block;
-            width: 60px;
-            height: 60px;
-            background-color: aqua;
-          }
-        }
       }
     }
   }

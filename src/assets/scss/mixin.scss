@@ -1,0 +1,16 @@
+
+@mixin icon-bg($x, $y) {
+  background: url('#{$img-url}/icon.png') $x $y;
+}
+@mixin logo-bg($x, $y) {
+  background: url('#{$img-url}/logo.png') $x $y;
+}
+@mixin p-icon-bg($x, $y) {
+  background: url('#{$img-url}/p-icon.png') $x $y;
+}
+@mixin sprite-bg($x, $y) {
+  background: url('#{$img-url}/sprite.png') $x $y;
+}
+@mixin main-min-height($h-margin: 0px, $h-padding: 0px) {
+  min-height: calc(100% - #{$header-height} - #{$footer-height} - #{$h-margin} - #{$h-padding});
+}

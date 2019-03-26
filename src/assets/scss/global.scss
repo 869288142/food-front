@@ -1,6 +1,11 @@
+
+@import './variables.scss';
+
 html {
+  height: 100%;
 }
 body {
+  height: 100%;
   font-size: 12px;
   background-color: #f3f3f3 
 }
@@ -28,6 +33,10 @@ ul {
   justify-content: center;
   align-items: center;
 }
+.flex-main-v-center {
+  display: flex;
+  align-items: center;
+}
 .flex-main-between {
   display: flex;
   justify-content: space-between;
@@ -42,4 +51,27 @@ ul {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+}
+.flex-main-column-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+// 小星星
+.nostar {
+  display: inline-block;
+  width: 68px;
+  height: 12px;
+  margin-right: 8px;
+  background: url('../img/icon.png') -60px -34px;
+}
+@for $i from 1 through 5 {
+  .star#{$i} {
+    width: #{(14 * $i)}px;
+    display: inline-block;
+    height: 12px;
+    background: url('../img/icon.png') -60px -22px;
+  }
 }
