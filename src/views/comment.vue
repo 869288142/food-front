@@ -1,7 +1,7 @@
 <template>
   <div class="root">
     <div class="comment flex-main-column-around">
-      <h2>陈添记(十五甫三巷店)</h2>
+      <h2>{{restaurantName}}</h2>
       <div class="flex-main-v-center">
         <label>评分</label> 
         <div class="score">
@@ -90,6 +90,7 @@ export default {
   name: "comment",
   data() {
     return {
+      restaurantName:'',
       imageUrl: "",
       dialogVisible: false,
       fileList: [],
@@ -184,7 +185,9 @@ export default {
     }
   },
   mounted() {
-    ;({ id: this.comment.restaurant_id } = this.$route.query)
+    ;({ id: this.comment.restaurant_id,
+        name: this.restaurantName
+    } = this.$route.query)
   }
 }
 </script>

@@ -257,7 +257,8 @@ export default {
     },
     gotoDetail(r_id) {
       this.setRId(r_id)
-      this.$router.push({ path: "/detail" })
+      let r = this.r_list.find(r => r.id === r_id)
+      this.$router.push({ path: "/detail"})
     }
   },
   async created() {
@@ -544,6 +545,7 @@ export default {
       align-items: flex-start;
       justify-content: space-between;
       .r-name {
+        cursor: pointer;
         text-decoration: none;
         font-size: 16px;
         font-weight: normal;

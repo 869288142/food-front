@@ -6,7 +6,8 @@
         <div class="text flex-main-column-around">
           <h1>{{r.name}}</h1>
           <div class="evaluate">
-            <span class="r-tips">{{getRTips(r.score)}}</span>
+            <span  class="r-tips">{{getRTips(r.score)}}</span>
+            <!-- <span v-else  class="r-tips">暂无评价</span> -->
             <span class="nostar">
               <i :class="star(r.score)"></i>  
             </span>
@@ -88,7 +89,8 @@ export default {
     ...mapMutations(["setRId"]),
     gotoComment(id) {
       console.log(id)
-      this.$router.push({ path: "/comment", query: { id } })
+      let { name } = this.r
+      this.$router.push({ path: "/comment", query: { id, name } })
     },
     noEmpty(arr) {
       return arr && arr.length !== 0
@@ -103,20 +105,21 @@ export default {
       let floorN = Math.floor(n)
       return this.getTips(floorN)
     },
-    addCollection(restaurant_id, user_id) {
-      this.apiPost("/addCollection", {
+    async addCollection(restaurant_id, user_id) {
+      await this.apiPost("/addCollection", {
         restaurant_id,
         user_id
       })
+      this.restaurants = await this.apiGet("/getCollection", { id: this.user_id })
     },
     isCollecion(restaurant_id) {
-      console.log("c", this.t)
       return !~this.restaurants.findIndex(
         restaurant => restaurant.id === restaurant_id
       )
     }
   },
   async created() {
+    console.log( typeof this.$route.query.r, this.$route.query.r)
     // let p1 = this.apiGet("/getRestaurantDetail", { id })
     // let p2 = this.apiGet("/getRestaurantCommentList", { id })
     // eslint-disable-next-line

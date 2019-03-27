@@ -2,7 +2,7 @@
   <div id="app">
     <food-header :cityName="cityName"></food-header>
     <router-view></router-view>
-    <!-- <food-footer></food-footer> -->
+    <food-footer></food-footer>
   </div>
 </template>
 <script>

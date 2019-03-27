@@ -14,7 +14,7 @@ export default new Vuex.Store({
       id: 4,
       name: "广州"
     },
-    scoreTips: ["千万别去", "不推荐", "一般般", "值得一去", "必须推荐"],
+    scoreTips: ["暂无评价", "千万别去", "不推荐", "一般般", "值得一去", "必须推荐"],
     r_id: 0
   },
   getters: {
