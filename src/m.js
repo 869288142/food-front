@@ -85,3 +85,7 @@
 //       }
 //   ]
 // },
+
+let n = 000
+let s = 
+console.log(000.toString());

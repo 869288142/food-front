@@ -119,7 +119,6 @@ export default {
     }
   },
   async created() {
-    console.log( typeof this.$route.query.r, this.$route.query.r)
     // let p1 = this.apiGet("/getRestaurantDetail", { id })
     // let p2 = this.apiGet("/getRestaurantCommentList", { id })
     // eslint-disable-next-line
