@@ -31,7 +31,7 @@
         </p>
         <div class="photo">
           <img
-              v-for="(img, index) in JSON.parse(comment.imgs)"
+              v-for="(img, index) in getImgs(comment.imgs)"
               :key="index"
               :src="img.filepath"
               alt=""
@@ -97,6 +97,9 @@ export default {
       this.replyComments = await this.apiGet("/getReplyComment", {
         id: this.comment_id
       })
+    },
+    getImgs(imgJSON) {
+      return imgJSON ? JSON.parse(imgJSON ) : []
     }
   },
   computed: {

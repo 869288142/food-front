@@ -156,7 +156,7 @@ export default {
     },
     clickStar(count) {
       this.scoreCount = count
-      let index = count - 1
+      let index = count 
       this.text = this.getTips(index)
     },
     clickTasteStar(tatseCount) {
@@ -182,7 +182,16 @@ export default {
     handlePictureCardPreview(file) {
       this.imageUrl = file.url
       this.dialogVisible = true
-    }
+    },
+    // hover(count) {
+    //   this.scoreCount = count
+    //   let index = count 
+    //   this.text = this.getTips(index)
+    // },
+    // clearHover() {
+    //   this.scoreCount = 0
+    //   this.text = this.getTips(0)
+    // }
   },
   mounted() {
     ;({ id: this.comment.restaurant_id,

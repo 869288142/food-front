@@ -13,6 +13,7 @@ axios.interceptors.request.use(function(config) {
   // console.log(config.url)
   return config
 })
+// axios.defaults.baseURL = '/api/'
 window.axios = axios
 import httpMixin from "./mixins/httpMixin"
 Vue.mixin(httpMixin)

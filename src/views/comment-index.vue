@@ -99,6 +99,7 @@ export default {
       }
     },
     async addLike(comment) {
+      console.log("click");
       let { id, like_count } = comment
       like_count++
       let postData = {

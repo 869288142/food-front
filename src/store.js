@@ -3,7 +3,9 @@ import Vuex from "vuex"
 import VuexPersistence from "vuex-persist"
 Vue.use(Vuex)
 // 每次提交mutation时，保存到localStorge ,重启应用时重新读取
-let vuexLocal = new VuexPersistence()
+let vuexLocal = new VuexPersistence({
+  storage: window.sessionStorage
+})
 export default new Vuex.Store({
   state: {
     user: {
@@ -11,8 +13,8 @@ export default new Vuex.Store({
       name: "卷卷"
     },
     selectCity: {
-      id: 4,
-      name: "广州"
+      id: 2,
+      name: "长沙"
     },
     scoreTips: ["暂无评价", "千万别去", "不推荐", "一般般", "值得一去", "必须推荐"],
     r_id: 0

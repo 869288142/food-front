@@ -1,6 +1,17 @@
 module.exports = {
   devServer: {
     proxy: "http://127.0.0.1:7001"
+    // proxy: {
+    //   "/api": {
+    //     target: "localhost:7001",
+    //     pathRewrite: {
+    //       "^/api": " "
+    //     }
+    //   },
+    //   "/public": {
+    //     target: "localhost:7001"
+    //   }
+    // }
   },
   css: {
     loaderOptions: {
@@ -11,5 +22,6 @@ module.exports = {
         data: `@import "@/assets/scss/variables.scss", "@/assets/scss/mixin.scss";`
       }
     }
-  }
+  },
+  publicPath: process.env.NODE_ENV === "production" ? "/" : "/"
 }

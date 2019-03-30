@@ -86,5 +86,10 @@
 //   ]
 // },
 
-let n = 000
-console.log(000.toString());
+// let n = 0000
+// ;{
+//   console.log(n.toFixed())
+// }
+
+let a =  /^\.\.?[/\\]/g.test("./../s")
+console.log(a);

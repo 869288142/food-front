@@ -261,6 +261,12 @@ export default {
       this.$router.push({ path: "/detail"})
     }
   },
+  watch: {
+    async city_id() {
+      this.sp_dishes_list = await this.apiGet("/getSpDishesList", { city_id: this.city_id}) 
+      await this.getRestaurantList()
+    }
+  },
   async created() {
     this.getRestaurantList()
     // eslint-disable-next-line
