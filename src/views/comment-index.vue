@@ -60,7 +60,11 @@
             </div>
             <div class="comment-footer flex-main-between">
               <span class="time">{{comment.create_time}}</span>
-              <a class="reply" href="javascript:void(0);" @click="gotoReply(comment.id)">
+              <a
+                class="reply"
+                href="javascript:void(0);"
+                @click="gotoReply(comment.id)"
+              >
                 回应
               </a>
               <!-- <router-link
@@ -74,6 +78,16 @@
       <h2 v-else>
         <span>暂无</span>
       </h2>
+      <el-pagination
+        class="pagination"
+        background
+        layout="prev, pager, next"
+        :current-page.sync="currentPage"
+        :total="count"
+        :page-size="limit"
+        @current-change="pageChange"
+      >
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -82,7 +96,10 @@ import { mapState } from "vuex"
 export default {
   data() {
     return {
-      comments: []
+      comments: [],
+      currentPage: 1,
+      limit: 2,
+      count: 10
     }
   },
   computed: {
@@ -99,7 +116,7 @@ export default {
       }
     },
     async addLike(comment) {
-      console.log("click");
+      console.log("click")
       let { id, like_count } = comment
       like_count++
       let postData = {
@@ -109,18 +126,31 @@ export default {
         }
       }
       await this.apiPost("/updateComment", postData)
-      this.comments = await this.apiGet("/getRestaurantCommentList", {
-        id: this.r_id
-      })
+      this.getComment()
     },
     gotoReply(comment_id) {
       this.$router.push({ path: "/detail/reply", query: { comment_id } })
+    },
+    async pageChange() {
+      this.getComment()
+    },
+    async getComment() {
+      this.comments = await this.apiGet("/getRestaurantCommentList", {
+        currentPage: this.currentPage,
+        limit: this.limit,
+        id: this.r_id,
+      }) 
+    },
+    async getCommentCount() {
+      let comemnts = await this.apiGet("/getRestaurantCommentList", {
+        id: this.r_id
+      })
+      this.count = comemnts.length
     }
   },
   async created() {
-    this.comments = await this.apiGet("/getRestaurantCommentList", {
-      id: this.r_id
-    })
+    await this.getCommentCount()
+    await this.getComment()
   }
 }
 </script>
@@ -231,5 +261,12 @@ export default {
       }
     }
   }
+}
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 15px;
+  // margin-top: 20px;
+  // margin-bottom: 20px;
 }
 </style>

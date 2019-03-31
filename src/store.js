@@ -13,8 +13,8 @@ export default new Vuex.Store({
       name: "卷卷"
     },
     selectCity: {
-      id: 2,
-      name: "长沙"
+      id: 4,
+      name: "广州"
     },
     scoreTips: ["暂无评价", "千万别去", "不推荐", "一般般", "值得一去", "必须推荐"],
     r_id: 0

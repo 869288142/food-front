@@ -168,7 +168,7 @@ export default {
           area_id: 0,
           name: ""
         },
-        order: [],
+        order: [["score","DESC"], ["comment_count", "DESC"]],
         currentPage: 1
       }
     }
@@ -205,20 +205,21 @@ export default {
     },
     priceOrder() {
       this.query.order = []
-      this.query.order.push(["avg_price", "ASC"])
+      this.query.order.push(["comment_count", "DESC"], ["score", "DESC"], ["avg_price", "ASC"])
       this.resetActiveOrder()
       this.isPriceActive = true
       this.getRestaurantList()
     },
     commentOrder() {
       this.query.order = []
-      this.query.order.push(["comment_count", "DESC"])
+      this.query.order.push(["comment_count", "DESC"],["score", "DESC"])
       this.resetActiveOrder()
       this.isCommentActive = true
       this.getRestaurantList()
     },
     noOrder() {
       this.query.order = []
+      this.query.order.push(["score","DESC"], ["comment_count", "DESC"])
       this.resetActiveOrder()
       this.getRestaurantList()
     },

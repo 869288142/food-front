@@ -121,7 +121,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .select-city {
-  @include main-min-height($h-margin: 0px, $h-padding: 56px);
+  // @include main-min-height($h-margin: 0px, $h-padding: 56px);
   width: 1000px;
   margin: 0 auto;
   background-color: #fff;

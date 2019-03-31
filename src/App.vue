@@ -30,6 +30,7 @@ export default {
       } = data
       // 找到Geolocation与后台数据库匹配到项
       let r = this.cities.find(c => c.name === city.replace(/(.*)市$/g, "$1"))
+      console.log(this)
       // 只有初次打开页面才定位
       if (!sessionStorage.getItem("vuex")) {
         this.setCity(r)
@@ -51,14 +52,14 @@ export default {
         })
         map.addControl(geolocation)
         geolocation.getCurrentPosition()
-        AMap.event.addListener(geolocation, "complete", this.onComplete.bind(this)) //返回定位信息
-        AMap.event.addListener(geolocation, "error", this.onError.bind(this)) //返回定位出错信息
+        AMap.event.addListener(geolocation, "complete", this.onComplete) //返回定位信息
+        AMap.event.addListener(geolocation, "error", this.onError) //返回定位出错信息
       })
     }
   },
   async created() {
-    this.cities = await this.apiGet("city")
-    this.setCityToVuex()
+    // this.cities = await this.apiGet("city")
+    // this.setCityToVuex()
   }
 }
 </script>
