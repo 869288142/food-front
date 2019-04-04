@@ -14,6 +14,7 @@ import userComment from "./views/user-comment.vue"
 import userRestaurant from "./views/user-restaurant.vue"
 import userReply from "./views/user-reply.vue"
 import userCollection from "./views/user-collection.vue"
+import userInfo from "./views/user-info.vue"
 import upload from "./views/upload.vue"
 
 Vue.use(Router)
@@ -118,6 +119,13 @@ const router = new Router({
           component: userComment,
           meta: {
             title: "我的点评"
+          }
+        },
+        {
+          path: "info",
+          component: userInfo,
+          meta: {
+            title: "个人信息"
           }
         },
         {

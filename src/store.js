@@ -9,8 +9,8 @@ let vuexLocal = new VuexPersistence({
 export default new Vuex.Store({
   state: {
     user: {
-      id: 1,
-      name: "卷卷"
+      // id: 1,
+      // name: "卷卷"
     },
     selectCity: {
       id: 4,
@@ -39,6 +39,9 @@ export default new Vuex.Store({
     },
     userName(state) {
       return state.user.name
+    },
+    userAvatar(state) {
+      return state.user.avatar
     }
   },
   mutations: {

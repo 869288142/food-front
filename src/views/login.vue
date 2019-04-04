@@ -1,17 +1,21 @@
 <template>
   <div class="login flex-main-column-center">
-    <span v-show="isLoginError">账号或密码有误</span>
-    <div>
-      <label for="">账号</label>
-      <el-input v-model="username" type="text" name=""></el-input>
-    </div>
-    <div>
-      <label for="">密码</label>
-      <el-input v-model="password" type="password" name=""></el-input>
-    </div>
-    <div>
-      <el-button @click="login()">登录</el-button>
-      <el-button @click="register()">注册</el-button>
+    <div class="login-wrap">
+      <!-- 测试动态组件 -->
+      <div class="button-wrap">
+        <button
+          class="button"
+          @click="currentTabComponent='login-tab'"
+        >登录注册</button>
+        <button
+          class="button"
+          @click="currentTabComponent='modify-tab'"
+        >修改密码</button>
+      </div>
+      <component
+        class="tab"
+        :is="currentTabComponent"
+      ></component>
     </div>
   </div>
 </template>
@@ -20,37 +24,7 @@ import { mapState, mapMutations } from "vuex"
 export default {
   data() {
     return {
-      username: "",
-      password: "",
-      isLoginError: false
-    }
-  },
-  computed: {
-    ...mapState({
-      user: state => state.user
-    })
-  },
-  methods: {
-    ...mapMutations(["initUser"]),
-    async login() {
-      const pData = {
-        username: this.username,
-        password: this.password
-      }
-      const user = await this.apiPost("/login", pData)
-      // eslint-disable-next-line
-      this.isLoginError = util.isEmptyObj(user)
-      if (!this.isLoginError) {
-        this.initUser(user)
-        this.$router.push({ path: "/" })
-      }
-    },
-    async register() {
-      const pData = {
-        username: this.username,
-        password: this.password
-      }
-      await this.apiPost("/register", pData)
+      currentTabComponent: "login-tab"
     }
   }
 }
@@ -59,8 +33,38 @@ export default {
 .login {
   @include main-min-height($h-margin: 0px, $h-padding: 0px);
   margin: 0 auto;
-  background-color: #fff;
   height: 600px;
   width: 100%;
+  &-wrap {
+    width: 350px;
+    // height: 220px;
+    background-color: #fff;
+    // border-radius: 40px;
+    border-radius: 10px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.4);
+  }
+}
+.button-wrap {
+  margin: 20px;
+  display: flex;
+  border-bottom: solid 1px #e3e3e3;
+  border-top: solid 1px #e3e3e3;
+  .button {
+    &:first-child {
+      border-left: solid 1px #e3e3e3;
+    }
+  }
+}
+.button {
+  border: 0;
+  flex-basis: 50%;
+  height: 40px;
+  background-color: #fff;
+  border-right: solid 1px #e3e3e3;
+  outline: none;
+  cursor: pointer;
+}
+.tab {
+  margin: 10px 20px;
 }
 </style>

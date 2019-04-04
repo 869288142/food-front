@@ -6,12 +6,18 @@
       <router-link to="/select-city">{{cityName}}</router-link>
     </div>
     <ul class="nav flex-main-around">
-      <!-- <li v-for="(e, index) in 10" :key="index" >用户</li> --> 
-      <router-link v-if="notLogin" to="/login">登录</router-link>
+      <!-- <li v-for="(e, index) in 10" :key="index" >用户</li> -->
+      <router-link
+        v-if="notLogin"
+        to="/login"
+      >登录</router-link>
       <el-dropdown v-if="isLogin">
         <div class="dropdown-menu">
           <div class="user-avatar-wrap">
-            <img src="/public/img/default-avatar.png"  :title="userName">
+            <img
+              :src=" userAvatar || '/public/img/default-avatar.png'"
+              :title="userName"
+            >
           </div>
           <i class="icon-drop-down"></i>
         </div>
@@ -21,7 +27,10 @@
           <el-dropdown-item @click.native="showOwnReply">我的回复</el-dropdown-item>
           <el-dropdown-item @click.native="showOwnCollection">我的收藏</el-dropdown-item>
           <el-dropdown-item @click.native="showOwnInfo">个人信息</el-dropdown-item>
-          <el-dropdown-item divided @click.native="exitLogin">注销</el-dropdown-item>
+          <el-dropdown-item
+            divided
+            @click.native="exitLogin"
+          >注销</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </ul>
@@ -32,7 +41,7 @@ import { mapGetters, mapMutations } from "vuex"
 export default {
   props: ["cityName"],
   computed: {
-    ...mapGetters(["isLogin", "userName"]),
+    ...mapGetters(["isLogin", "userName", "userAvatar"]),
     notLogin() {
       return !this.isLogin
     }
@@ -66,6 +75,10 @@ export default {
       })
     },
     showOwnInfo() {
+      this.$router.push({
+        path: "/user/info",
+        query: { activeName: "fifth" }
+      })
       console.log("info")
     },
     exitLogin() {

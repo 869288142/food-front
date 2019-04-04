@@ -1,6 +1,9 @@
 <template>
   <div class="user-tab">
     <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
+      <el-tab-pane name="fifth" ref="fifth" class="item">
+        <router-link to="/user/info" slot="label" class="router-link">个人信息</router-link>
+      </el-tab-pane>
       <el-tab-pane name="first" ref="first" class="item">
         <router-link to="/user/restaurant" slot="label" class="router-link">餐馆管理</router-link>
       </el-tab-pane>
