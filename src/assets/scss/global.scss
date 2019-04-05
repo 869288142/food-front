@@ -75,3 +75,8 @@ ul {
     background: url('../img/icon.png') -60px -22px;
   }
 }
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}

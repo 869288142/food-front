@@ -182,7 +182,8 @@ export default {
         a_district_id,
         area_id,
         avatar_url: this.imageUrl,
-        user_id: this.user_id
+        user_id: this.user_id,
+        update_user_id: this.user_id
       })
       this.apiPost("/createRestaurant", data)
       // this.$router.go(-1)

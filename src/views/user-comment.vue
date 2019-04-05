@@ -64,7 +64,6 @@ export default {
       // margin: 0 10%;
       margin-bottom: 20px;
       box-shadow: 0 2px 4px 0 rgba(121, 146, 185, 0.54);
-      border-radius: 4px;
       padding: 5px;
       > img {
         display: inline-block;

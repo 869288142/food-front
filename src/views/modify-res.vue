@@ -1,6 +1,6 @@
 <template>
   <div class="update-res">
-    
+
     <el-form
       :label-position="labelPosition"
       label-width="120px"
@@ -81,38 +81,20 @@
         label="推荐菜"
       >
         <el-tag
+          v-if="dishes.length !== 0"
           :key="tag.id"
-          v-for="tag in dynamicTags"
-          closable
+          v-for="tag in dishes"
+          :closable="false"
           :disable-transitions="false"
-          @click="handleClick(tag.id)"
-          @close="handleClose(tag.id)"
         >
-          <el-input
-            v-show="tag.show"
-            class="input-new-tag"
-            size="small"
-            @keyup.enter.native="submit(tag.id)"
-            @blur="submit(tag.id)"
-          ></el-input>
-          <span v-show="!tag.show">{{tag.name}}</span>
+          <span>{{tag.name}}</span>
         </el-tag>
-        <el-input
-          class="input-new-tag"
-          v-if="inputVisible"
-          v-model="inputValue"
-          ref="saveTagInput"
-          size="small"
-          @keyup.enter.native="handleInputConfirm"
-          @blur="handleInputConfirm"
-        >
-        </el-input>
+        <span v-if="dishes.length === 0">暂无</span>
         <el-button
-          v-else
-          class="button-new-tag"
           size="small"
-          @click="showInput"
-        >+ New Tag</el-button>
+          class="edit-dishes"
+          @click="editDishes"
+        >编辑</el-button>
       </el-form-item>
       <el-form-item
         class="item"
@@ -174,25 +156,7 @@ export default {
       province_link_list: [],
       selectedOptions: [],
       restaurant: {},
-      dynamicTags: [
-        {
-          id: 1,
-          name: "标签一",
-          show: false
-        },
-        {
-          id: 2,
-          name: "标签二",
-          show: false
-        },
-        {
-          id: 3,
-          name: "标签三",
-          show: false
-        }
-      ],
-      inputVisible: false,
-      inputValue: ""
+      dishes: []
     }
   },
   computed: {
@@ -246,7 +210,7 @@ export default {
         a_district_id,
         area_id,
         avatar_url: this.imageUrl,
-        user_id: this.user_id
+        update_user_id: this.user_id
       })
       this.apiPut("/restaurant", {
         id: this.restaurant.id,
@@ -276,44 +240,25 @@ export default {
         business_hours: this.form.business_hours
       } = this.restaurant)
     },
-    handleClick(id) {
-      let tag = this.dynamicTags.find(e => e.id === id)
-      console.log(id, tag)
-      tag.show = true
-    },
-    handleClose(tag) {
-      this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
-    },
-
-    showInput() {
-      this.inputVisible = true
-      this.$nextTick(_ => {
-        this.$refs.saveTagInput.$refs.input.focus()
+    editDishes() {
+      this.$router.push({
+        path: "/restaurant-dishes",
+        query: { name: this.restaurant.name }
       })
-    },
-    handleInputConfirm() {
-      let inputValue = this.inputValue
-      if (inputValue) {
-        this.dynamicTags.push(inputValue)
-      }
-      this.inputVisible = false
-      this.inputValue = ""
-    },
-    submit(id) {
-      let tag = this.dynamicTags.find(e => e.id === id)
-      tag.show = false
     }
   },
   async created() {
     let p1 = this.apiGet("/getFeatureList")
     let p2 = this.apiGet("/getCuisineList")
     let p3 = this.apiGet("/getProvinceLinkList")
+    let p4 = this.apiGet("/dishes", { id: this.r_id })
     ;[
       this.feature_list,
       this.cuisine_list,
-      this.province_link_list
+      this.province_link_list,
+      { rows: this.dishes }
       // eslint-disable-next-line
-    ] = await util.asyncPromise(p1, p2, p3)
+    ] = await util.asyncPromise(p1, p2, p3, p4)
     await this.init()
   }
 }
@@ -356,16 +301,7 @@ export default {
 .el-tag + .el-tag {
   margin-left: 10px;
 }
-.button-new-tag {
-  margin-left: 10px;
-  height: 32px;
-  line-height: 30px;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-.input-new-tag {
-  width: 90px;
-  margin-left: 10px;
-  vertical-align: bottom;
+.edit-dishes {
+  margin-left: 20px;
 }
 </style>

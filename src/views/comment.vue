@@ -324,7 +324,6 @@ export default {
       display: inline-block;
       width: 120px;
       height: 120px;
-      background-color: aqua;
     }
   }
   .sumbit {

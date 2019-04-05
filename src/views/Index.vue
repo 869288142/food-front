@@ -384,7 +384,6 @@ export default {
 }
 .search {
   width: 680px;
-  // background-color: aqua;
   .header {
     display: flex;
     justify-content: space-between;

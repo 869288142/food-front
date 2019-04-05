@@ -2,7 +2,7 @@ import Vue from "vue"
 export function getCookie(key) {
   let reg = new RegExp(`(^| )${key}=([^;]*)(;|$)`)
   let result = document.cookie.match(reg)
-  return result[2]
+  return result ? result[2] : null
 }
 export function getRepeatElementArray(arr, times) {
   const tmp = [...arr]

@@ -35,7 +35,7 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex"
+import { mapState, mapActions } from "vuex"
 export default {
   data() {
     return {
@@ -48,6 +48,7 @@ export default {
     ...mapState(["user"])
   },
   methods: {
+    ...mapActions(["getUser"]),
     handleAvatarSuccess(res, file) {
       this.imageUrl = res.filepath
     },
@@ -57,6 +58,7 @@ export default {
         name: this.userName,
         avatar: this.imageUrl
       })
+      await this.getUser()
     }
   },
   created() {

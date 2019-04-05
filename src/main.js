@@ -3,14 +3,15 @@ import App from "./App.vue"
 import router from "./router"
 import store from "./store"
 // 获取cookie
-// import { Cookie } from './util'
+import { getCookie } from "./util"
 // axios配置
 import axios from "axios"
 // 拦截axios请求
 axios.interceptors.request.use(function(config) {
-  // let csrfToken = Cookie.get('csrfToken')
-  // axios.defaults.headers['x-csrf-token'] = csrfToken
-  // console.log(config.url)
+  // let token = getCookie("token")
+  // if (token) {
+  //   config.headers.authorization = token
+  // }
   return config
 })
 // axios.defaults.baseURL = '/api/'

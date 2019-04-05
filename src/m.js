@@ -91,5 +91,13 @@
 //   console.log(n.toFixed())
 // }
 
-let a =  /^\.\.?[/\\]/g.test("./../s")
-console.log(a);
+// let a =  /^\.\.?[/\\]/g.test("./../s")
+// console.log(a);
+
+let obj = {
+  a: 1
+}
+
+for (let [k, v] of Object.entries(obj)) {
+  console.log(k,v);
+}

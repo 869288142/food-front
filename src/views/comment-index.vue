@@ -92,7 +92,7 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex"
+import { mapState, mapGetters } from "vuex"
 export default {
   data() {
     return {
@@ -103,7 +103,8 @@ export default {
     }
   },
   computed: {
-    ...mapState(["r_id"])
+    ...mapState(["r_id"]),
+    ...mapGetters(["isLogin"])
   },
   methods: {
     noEmpty(arr) {
@@ -117,16 +118,20 @@ export default {
     },
     async addLike(comment) {
       console.log("click")
-      let { id, like_count } = comment
-      like_count++
-      let postData = {
-        id,
-        updateField: {
-          like_count
+      if (!this.isLogin) {
+        this.$router.push({ path: "/login" })
+      } else {
+        let { id, like_count } = comment
+        like_count++
+        let postData = {
+          id,
+          updateField: {
+            like_count
+          }
         }
+        await this.apiPost("/updateComment", postData)
+        this.getComment()
       }
-      await this.apiPost("/updateComment", postData)
-      this.getComment()
     },
     gotoReply(comment_id) {
       this.$router.push({ path: "/detail/reply", query: { comment_id } })
@@ -138,8 +143,8 @@ export default {
       this.comments = await this.apiGet("/getRestaurantCommentList", {
         currentPage: this.currentPage,
         limit: this.limit,
-        id: this.r_id,
-      }) 
+        id: this.r_id
+      })
     },
     async getCommentCount() {
       let comemnts = await this.apiGet("/getRestaurantCommentList", {
@@ -174,7 +179,6 @@ export default {
       > img {
         width: 60px;
         height: 60px;
-        background-color: aqua;
         display: inline-block;
       }
       .article {
@@ -248,7 +252,6 @@ export default {
             margin-right: 10px;
             width: 96px;
             height: 96px;
-            background-color: aqua;
           }
         }
         .comment-footer {

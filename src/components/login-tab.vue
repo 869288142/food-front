@@ -49,7 +49,7 @@ export default {
       this.isLoginError = util.isEmptyObj(user)
       if (!this.isLoginError) {
         this.initUser(user)
-        this.$router.push({ path: "/" })
+        this.$router.go(-1)
       } else {
         this.$message({
           message: "账号或密码错误",

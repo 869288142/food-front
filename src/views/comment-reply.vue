@@ -136,7 +136,6 @@ export default {
       display: inline-block;
       width: 40px;
       height: 40px;
-      background-color: aqua;
     }
     &-text {
       > span:first-child {
@@ -182,7 +181,6 @@ export default {
   > img {
     width: 60px;
     height: 60px;
-    background-color: aqua;
     display: inline-block;
   }
   .article {
@@ -256,7 +254,6 @@ export default {
         margin-right: 10px;
         width: 96px;
         height: 96px;
-        background-color: aqua;
       }
     }
     .comment-footer {

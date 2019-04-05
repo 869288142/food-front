@@ -6,10 +6,10 @@
         <div class="text flex-main-column-around">
           <h1>{{r.name}}</h1>
           <div class="evaluate">
-            <span  class="r-tips">{{getRTips(r.score)}}</span>
+            <span class="r-tips">{{getRTips(r.score)}}</span>
             <!-- <span v-else  class="r-tips">暂无评价</span> -->
             <span class="nostar">
-              <i :class="star(r.score)"></i>  
+              <i :class="star(r.score)"></i>
             </span>
             <span>{{r.score}}分</span>
             <span>{{r.comment_count}}条点评</span>
@@ -24,11 +24,22 @@
           <div>
             <span>营业时间: {{r.business_hours}}</span>
           </div>
+          <div>
+            <span>信息编辑时间: {{r.update_time}} </span>
+            <span>编辑人: {{r.update_user_name}}</span>
+            <router-link to="/modify-res" class="correct"> 更新纠错</router-link>
+          </div>
           <button @click="gotoComment(r.id)">我要点评</button>
         </div>
         <div class="photo">
-          <img :src="r.avatar_url || `/public/img/default-photo.jpeg`" alt="">
-          <span v-if="isCollecion(r.id)" @click="addCollection(r.id, user_id)">
+          <img
+            :src="r.avatar_url || `/public/img/default-photo.jpeg`"
+            alt=""
+          >
+          <span
+            v-if="isCollecion(r.id)"
+            @click="addCollection(r.id, user_id)"
+          >
             收藏
             <i></i>
           </span>
@@ -45,13 +56,13 @@
         </h2> -->
       </div>
       <!-- 推荐菜 -->
-      <!-- <div class="recommand">
+      <div class="recommand">
         <h2>
           <span>推荐菜</span>
         </h2>
         <ul v-if="noEmpty(r.dishes)" class="list">
           <li v-for="(dish, index) in r.dishes" :key="index" class="item">
-            <img src="/public/img/default-photo.jpeg" alt="">
+            <img :src=" dish.img || '/public/img/default-photo.jpeg' " alt="">
             <span>{{dish.name}}</span>
             <span class="price">￥{{dish.price}}</span>
           </li>
@@ -59,8 +70,8 @@
         <h2 v-else>
           <span>暂无</span> 
         </h2>
-      </div> -->
-    <router-view></router-view>
+      </div>
+      <router-view></router-view>
     </div>
   </div>
 </template>
@@ -75,7 +86,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["getTips", "user_id"]),
+    ...mapGetters(["getTips", "user_id", "isLogin"]),
     ...mapState(["r_id"])
     // isCollecion() {
     //   let r = (id) => {
@@ -106,15 +117,24 @@ export default {
       return this.getTips(floorN)
     },
     async addCollection(restaurant_id, user_id) {
-      await this.apiPost("/addCollection", {
-        restaurant_id,
-        user_id
-      })
-      this.restaurants = await this.apiGet("/getCollection", { id: this.user_id })
+      if (!this.isLogin) {
+        this.$router.push({ path: "/login"})
+      } else {
+        await this.apiPost("/addCollection", {
+          restaurant_id,
+          user_id
+        })
+        this.restaurants = await this.apiGet("/getCollection", {
+          id: this.user_id
+        })
+      }
     },
     isCollecion(restaurant_id) {
-      return !~this.restaurants.findIndex(
-        restaurant => restaurant.id === restaurant_id
+      return (
+        !this.isLogin ||
+        !~this.restaurants.findIndex(
+          restaurant => restaurant.id === restaurant_id
+        )
       )
     }
   },
@@ -155,7 +175,6 @@ export default {
     > img {
       width: 350px;
       height: 250px;
-      background-color: aquamarine;
     }
     &:hover {
       > span {
@@ -253,17 +272,22 @@ export default {
         display: block;
         width: 90px;
         height: 70px;
-        background-color: aqua;
+        margin-bottom: 10px;
       }
       .price {
         position: absolute;
         right: 0;
         top: 0;
         margin: 8px 8px 0 0;
-        color: #fff;
+        color: $theme-color;
         text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.65);
       }
     }
   }
+}
+.correct {
+  color: $theme-color;
+  margin-left: 20px;
+  text-decoration: none;
 }
 </style>

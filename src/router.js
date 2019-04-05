@@ -16,6 +16,8 @@ import userReply from "./views/user-reply.vue"
 import userCollection from "./views/user-collection.vue"
 import userInfo from "./views/user-info.vue"
 import upload from "./views/upload.vue"
+import restaurantDishes from "./views/restaurant-dishes.vue"
+import store from "./store"
 
 Vue.use(Router)
 // eslint-disable-next-line
@@ -54,7 +56,8 @@ const router = new Router({
           path: "reply",
           component: commentReply,
           meta: {
-            title: "回复"
+            title: "回复",
+            requireLogin: true
           }
         }
       ],
@@ -67,7 +70,8 @@ const router = new Router({
       name: "comment",
       component: comment,
       meta: {
-        title: "评论"
+        title: "评论",
+        requireLogin: true
       }
     },
     {
@@ -83,7 +87,8 @@ const router = new Router({
       name: "add-res",
       component: addRes,
       meta: {
-        title: "添加餐馆"
+        title: "添加餐馆",
+        requireLogin: true
       }
     },
     {
@@ -91,7 +96,8 @@ const router = new Router({
       name: "modify-res",
       component: modifyRes,
       meta: {
-        title: "修改餐馆信息"
+        title: "修改餐馆信息",
+        requireLogin: true
       }
     },
     {
@@ -111,6 +117,14 @@ const router = new Router({
       }
     },
     {
+      path: "/restaurant-dishes",
+      name: "restaurant-dishes",
+      component: restaurantDishes,
+      meta: {
+        title: "推荐菜编辑"
+      }
+    },
+    {
       path: "/user",
       component: userTab,
       children: [
@@ -118,37 +132,42 @@ const router = new Router({
           path: "comment",
           component: userComment,
           meta: {
-            title: "我的点评"
+            title: "我的点评",
+            requireLogin: true
           }
         },
         {
           path: "info",
           component: userInfo,
           meta: {
-            title: "个人信息"
+            title: "个人信息",
+            requireLogin: true
           }
         },
         {
           path: "reply",
           component: userReply,
           meta: {
-            title: "我的回复"
+            title: "我的回复",
+            requireLogin: true
           }
         },
         {
           path: "restaurant",
           component: userRestaurant,
           meta: {
-            title: "我的餐馆"
+            title: "我的餐馆",
+            requireLogin: true
           }
         },
         {
           path: "collection",
           component: userCollection,
           meta: {
-            title: "我的收藏"
+            title: "我的收藏",
+            requireLogin: true
           }
-        }
+        },
       ]
     }
     // {
@@ -166,15 +185,9 @@ const router = new Router({
 // 路由hook
 router.beforeEach((to, from, next) => {
   window.document.title = to.meta.title
-  // console.log(to)
-  // if(to.path === '/add-res' || to.path === '/comment'){
-  //   if(util.isEmptyObj(store.state.user)){
-  //     router.push({path: "/"})
-  //     next(vm => {
-  //       vm.$message("请先登录")
-  //     })
-  //   }
-  // }
+  if (to.meta.requireLogin && !store.getters.isLogin) {
+    router.push({ path: "/login" })
+  }
   next()
 })
 export default router
