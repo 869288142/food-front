@@ -1,13 +1,17 @@
 <template>
   <div class="add-res">
     <el-form
+      :model="form"
+      :rules="rules"
       :label-position="labelPosition"
       label-width="120px"
       size="medium"
+      ref="form"
     >
       <el-form-item
         class="item"
         label="名称"
+        prop="name"
       >
         <el-input v-model="form.name"></el-input>
       </el-form-item>
@@ -36,11 +40,15 @@
         class="item"
         label="简介"
       >
-        <el-input v-model="form.introduction" type="textarea"></el-input>
+        <el-input
+          v-model="form.introduction"
+          type="textarea"
+        ></el-input>
       </el-form-item>
       <el-form-item
         class="item"
         label="特色"
+        prop="feature_id"
       >
         <el-select
           v-model="form.feature_id"
@@ -58,6 +66,7 @@
       <el-form-item
         class="item"
         label="菜系"
+        prop="cuisine_id"
       >
         <el-select
           v-model="form.cuisine_id"
@@ -86,6 +95,7 @@
       <el-form-item
         class="item"
         label="地址"
+        prop="address"
       >
         <el-input v-model="form.address"></el-input>
       </el-form-item>
@@ -130,7 +140,13 @@ export default {
       feature_list: [],
       cuisine_list: [],
       province_link_list: [],
-      selectedOptions: []
+      selectedOptions: [],
+      rules: {
+        name: [{ required: true, message: "请输入名称", trigger: "blur" }],
+        feature_id: [{ required: true, message: "请选择特色", trigger: "change" }],
+        cuisine_id: [{ required: true, message: "请选择菜系", trigger: "change" }],
+        address: [{ required: true, message: "请填写地址", trigger: "blur" }]
+      }
     }
   },
   computed: {
@@ -174,19 +190,24 @@ export default {
     handleAvatarSuccess(res, file) {
       this.imageUrl = res.filepath
     },
-    createRes() {
-      let [, city_id, a_district_id, area_id] = this.selectedOptions
-      // eslint-disable-next-line
-      let data = Object.assign(this.form, {
-        city_id,
-        a_district_id,
-        area_id,
-        avatar_url: this.imageUrl,
-        user_id: this.user_id,
-        update_user_id: this.user_id
-      })
-      this.apiPost("/createRestaurant", data)
-      // this.$router.go(-1)
+    async createRes() {
+      try {
+        let valid = await this.$refs["form"].validate()
+        let [, city_id, a_district_id, area_id] = this.selectedOptions
+        // eslint-disable-next-line
+        let data = Object.assign(this.form, {
+          city_id,
+          a_district_id,
+          area_id,
+          avatar_url: this.imageUrl,
+          user_id: this.user_id,
+          update_user_id: this.user_id
+        })
+        this.apiPost("/createRestaurant", data)
+        this.$router.go(-1)
+      } catch (error) {
+
+      }
     },
     detailAreaChange(options) {
       // console.log(options)
@@ -201,7 +222,7 @@ export default {
       this.cuisine_list,
       this.province_link_list
       // eslint-disable-next-line
-    ] = await util.asyncPromise(p1, p2, p3);
+    ] = await util.asyncPromise(p1, p2, p3)
   }
 }
 </script>

@@ -79,6 +79,7 @@
         <span>暂无</span>
       </h2>
       <el-pagination
+      v-if="noEmpty(comments)"
         class="pagination"
         background
         layout="prev, pager, next"

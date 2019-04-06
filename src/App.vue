@@ -58,8 +58,8 @@ export default {
     }
   },
   async created() {
-    // this.cities = await this.apiGet("city")
-    // this.setCityToVuex()
+    ;({ rows: this.cities } = await this.apiGet("/city"))
+    this.setCityToVuex()
   }
 }
 </script>
